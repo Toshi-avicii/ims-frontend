@@ -4,7 +4,7 @@ const counselorService = createApi({
   reducerPath: "counselors",
   tagTypes: "counselors",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:5000/api/",
+    baseUrl: "https://inquiry-management-system-backend.onrender.com/api/",
     prepareHeaders: (headers, { getState }) => {
       const reducerState = getState();
       const token = reducerState?.authReducer?.adminToken;

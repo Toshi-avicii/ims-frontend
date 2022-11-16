@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const profileService = createApi({
     reducerPath: 'profile',
     baseQuery: fetchBaseQuery({
-        baseUrl: process.env.REACT_APP_API_PROFILE_ROUTE,
+        baseUrl: 'https://inquiry-management-system-backend.onrender.com/api/profile/',
         prepareHeaders: function(headers, { getState }) {
            const reducers = getState();
            const token = reducers?.authReducer?.adminToken;

@@ -4,7 +4,7 @@ const trashService = createApi({
     reducerPath: "trash",
     tagTypes: ['trash'],
     baseQuery: fetchBaseQuery({
-        baseUrl: process.env.REACT_APP_API_ROUTE,
+        baseUrl: 'https://inquiry-management-system-backend.onrender.com/api/',
         prepareHeaders: function(headers, { getState }) {
              const reducers = getState();
             const token = reducers?.authReducer?.adminToken;
