@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const authService = createApi({
   reducerPath: "auth",
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env.REACT_APP_API_ROUTE,
+    baseUrl: "https://inquiry-management-system-backend.onrender.com/api/",
   }),
   endpoints: (builder) => {
     return {
