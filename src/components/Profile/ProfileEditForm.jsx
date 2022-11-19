@@ -24,7 +24,7 @@ function ProfileEditForm() {
 
   const token = useSelector((state) => state.authReducer.adminToken);
   const decode = jwtDecode(token);
-  const userId = decode.id;
+  // const userId = decode.id;
 
   const { data, isFetching } = useGetUserProfileQuery(decode);
   const [updateProfile, response] = useUpdateUserProfileMutation();
@@ -35,12 +35,6 @@ function ProfileEditForm() {
     formData.append('photo', userDetail.photo);
     formData.append('name', userDetail.name);
     formData.append('email', userDetail.email);
-    let obj = {
-      id: userId,
-      name: userDetail.name,
-      email: userDetail.email,
-      photo: userDetail.photo
-    };
 
     updateProfile(formData);
   }
@@ -54,8 +48,8 @@ function ProfileEditForm() {
           name: data.data.name,
           email: data.data.email
         });
-        if(!data.data.photo.startsWith('http://')) {
-          setUserImg(`http://localhost:5000/${data.data.photo}`);
+        if(!data.data.photo.startsWith('https://')) {
+          setUserImg(`https://inquiry-management-system-backend.onrender.com/api/${data.data.photo}`);
         } else {
           setUserImg(data.data.photo);
         }

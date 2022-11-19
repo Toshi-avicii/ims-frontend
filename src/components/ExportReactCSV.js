@@ -2,7 +2,6 @@ import { CSVLink } from 'react-csv';
 // import { CloudArrowDownIcon } from '@heroicons/react/20/solid';
 
 function ExportReactCSV({ csvData, fileName }) {
-  // console.log(csvData);
   return (
     <div>
         <button className='bg-primary text-white rounded-sm shadow-md py-2 px-8 hover:bg-green-600 transition-all'>

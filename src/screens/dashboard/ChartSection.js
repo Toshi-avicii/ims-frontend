@@ -100,7 +100,7 @@ function ChartSection() {
     useEffect(() => {
         const fetchLeadData = async (returnData = false) => {
             try {
-                const req = await fetch('http://localhost:5000/api/leads/', {
+                const req = await fetch('https://inquiry-management-system-backend.onrender.com/api/leads/', {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',
@@ -180,7 +180,7 @@ function ChartSection() {
 
         const fetchLeadsByCounselorId = async (counselorId) => {
             try {
-                const req = await fetch(`http://localhost:5000/api/leads/counselors/${counselorId}`, {
+                const req = await fetch(`https://inquiry-management-system-backend.onrender.com/api/leads/counselors/${counselorId}`, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',
@@ -198,7 +198,7 @@ function ChartSection() {
         const fetchLeadsByCounselors = async () => {
             try {
                 // const leadsData = await fetchLeadData(true);
-                const req = await fetch('http://localhost:5000/api/counselors/', {
+                const req = await fetch('https://inquiry-management-system-backend.onrender.com/api/counselors/', {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json',

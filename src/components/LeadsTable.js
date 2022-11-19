@@ -34,7 +34,7 @@ function LeadsTable({ data, page }) {
       const dataToDownload = allLeads.map((item) => {
           const creationDate = new Date(item.createdAt);
           let dayOfCreation = creationDate.toLocaleDateString(undefined, { day: "numeric" });
-          dayOfCreation = Number(dayOfCreation) + 1;
+          let dayOfCreation2 = Number(dayOfCreation) + 1;
           
           let restDate = creationDate.toString().slice(3, 15);
           let time = creationDate.toString().slice(16, 21);
@@ -43,7 +43,7 @@ function LeadsTable({ data, page }) {
               name: item.name,
               email: item.email,
               phone: item.phone,
-              date: `${days[dayOfCreation]}, ${restDate}`,
+              date: `${days[dayOfCreation2]}, ${restDate}`,
               time: `${time}`,
               course: item.course,
               status: item.status,

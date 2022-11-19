@@ -7,10 +7,9 @@ import { useGetFilteredLeadsMutation } from '../store/services/leadService';
 function Filters({ page }) {
     const response = useGetCounselorsQuery();
     const [counselors, setCounselors] = useState([]);
-    const [appliedFilters, setAppliedFilters] = useState([]);
     const dispatch = useDispatch();
 
-    const [getFilteredLeads, filteredResponse] = useGetFilteredLeadsMutation();
+    const [getFilteredLeads] = useGetFilteredLeadsMutation();
 
     const [filterData, setFilterData] = useState({
         month: '',
@@ -58,17 +57,6 @@ function Filters({ page }) {
 
         if(!response.isFetching && response.status === "rejected") {
             console.log(response.data);
-        }
-
-        
-        let arr = [];
-        for(const [key, value] of Object.entries(filterData)) {
-            if(value !== '') {
-                arr.push({ [key]: value });
-                setAppliedFilters(arr);
-            } else {
-                continue;
-            }
         }
     }, [response, filterData]);
 
