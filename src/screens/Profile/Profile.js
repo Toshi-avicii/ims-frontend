@@ -49,7 +49,7 @@ function Profile() {
       if(data.data.photo.startsWith('http://')) {
         profilePic = data.data.photo;
       } else {
-        profilePic = `http://localhost:5000/${data.data.photo}`;
+        profilePic = `https://inquiry-management-system-backend.onrender.com/${data.data.photo}`;
       }
 
       dispatch(fetchProfileData({
