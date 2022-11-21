@@ -4,11 +4,13 @@ import AdminNav from "../../../components/AdminNav";
 import CounselorsTrashTable from "../../../components/Counselors/CounselorsTrashTable";
 import Sidebar from "../../../components/Sidebar";
 import { useGetTrashedCounselorsQuery } from "../../../store/services/trashCounselorService";
-import TrashCounselorsPagination from "../../../components/Counselors/TrashCounselorsPagination"
+import TrashCounselorsPagination from "../../../components/Counselors/TrashCounselorsPagination";
+import { HashLoader } from "react-spinners";
 
 function ShowCounselorsTrash() {
   const [sideBar, setSidebar] = useState("-left-64");
   const [trashedCounselor, setTrashedCouselor] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [paginationData, setPaginationData] = useState({
     perPage: 0,
     count: 0,
@@ -23,12 +25,17 @@ function ShowCounselorsTrash() {
 
   useEffect(() => {
     document.title = 'Discarded Counselors | Edlyf - Inquiry Management System';
+    if(isFetching) {
+      setLoading(true);
+    }
     if (!isFetching) {
       setTrashedCouselor(data.data);
       setPaginationData({
         perPage: data.perPage,
         count: data.count,
       });
+
+      setLoading(false);
     }
   }, [data, isFetching]);
 
@@ -44,43 +51,62 @@ function ShowCounselorsTrash() {
     setSidebar("-left-64");
   };
 
+  const override = {
+    display: "block",
+    margin: "0 auto",
+    height: '100vh',
+    width: '100%',
+    size: '100%',
+    transform: 'rotate(0deg)'
+  };
+
   return (
     <>
-      <Sidebar side={sideBar} closeSidebar={closeSidebar} />
-      <AdminNav openSidebar={openSidebar} />
+      {
+        loading ? <HashLoader
+          color="#1890ff"
+          loading={loading}
+          cssOverride={override}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        /> : <>
+            <Sidebar side={sideBar} closeSidebar={closeSidebar} />
+            <AdminNav openSidebar={openSidebar} />
 
-      <section className="ml-0 sm:ml-64 bg-slate-200 min-h-screen pt-28 px-4">
-        <div className="text-justify rounded-md">
-          <div className="mb-4">
-            <h1 className="text-2xl font-medium text-gray-600">
-              All Trashed Counselors
-            </h1>
-          </div>
-          {trashedCounselor && trashedCounselor.length > 0 && (
-            <div className="">
-              <CounselorsTrashTable data={trashedCounselor} />
-              <TrashCounselorsPagination
-                page={parseInt(page)}
-                count={paginationData.count}
-                perPage={paginationData.perPage}
-              />
-            </div>
-          )}
+            <section className="ml-0 sm:ml-64 bg-slate-200 min-h-screen pt-28 px-4">
+              <div className="text-justify rounded-md">
+                <div className="mb-4">
+                  <h1 className="text-2xl font-medium text-gray-600">
+                    All Trashed Counselors
+                  </h1>
+                </div>
+                {trashedCounselor && trashedCounselor.length > 0 && (
+                  <div className="">
+                    <CounselorsTrashTable data={trashedCounselor} />
+                    <TrashCounselorsPagination
+                      page={parseInt(page)}
+                      count={paginationData.count}
+                      perPage={paginationData.perPage}
+                    />
+                  </div>
+                )}
 
-          {!trashedCounselor && (
-            <div className="flex justify-center items-center h-[77vh]">
-              <div
-                className="flex p-8 mt-[-200px] ml-[-300px]  text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800 w-fit"
-                role="alert"
-              >
-                <span className="font-bold text-[40px]">
-                  No Counselors Found
-                </span>
+                {!trashedCounselor && (
+                  <div className="flex justify-center items-center h-[77vh]">
+                    <div
+                      className="flex p-8 mt-[-200px] ml-[-300px]  text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800 w-fit"
+                      role="alert"
+                    >
+                      <span className="font-bold text-[40px]">
+                        No Counselors Found
+                      </span>
+                    </div>
+                  </div>
+                )}
               </div>
-            </div>
-          )}
-        </div>
-      </section>
+            </section>
+        </>
+      }
     </>
   );
 }

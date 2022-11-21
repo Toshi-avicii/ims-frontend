@@ -7,10 +7,12 @@ import Pagination from '../../components/Pagination';
 import { useGetLeadsByPageQuery } from '../../store/services/leadService';
 import { useSelector } from 'react-redux';
 import Filters from '../../components/Filters';
+import HashLoader from "react-spinners/HashLoader";
 
 function ShowLeads() {
   const [sideBar, setSidebar] = useState('-left-64');
   const [leads, setLeads] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [paginationData, setPaginationData] = useState({
     perPage: 0,
     count: 0
@@ -38,24 +40,45 @@ function ShowLeads() {
   }
 
   useEffect(() => {
+    if(isFetching) {
+      setLoading(true);
+    }
+
     document.title = 'All Leads | Edlyf - Inquiry Management System';
     if(!isFetching) {
-      console.log(data);
         const leadData = data?.data;
         setLeads(leadData); 
         setPaginationData({
           perPage: data.perPage,
           count: data.count
         });
+        setLoading(false);
     }
   }, [isFetching, data]);
 
+  const override = {
+    display: "block",
+    margin: "0 auto",
+    height: '100vh',
+    width: '100%',
+    size: '100%',
+    transform: 'rotate(0deg)'
+  };
+  
+
   return (
     <>
-        <Sidebar side={sideBar} closeSidebar={closeSidebar} />
-        <AdminNav openSidebar={openSidebar} />
-
-        <section className="ml-0 sm:ml-64 bg-slate-200 min-h-screen pt-28 px-4">
+      { loading ? <HashLoader
+              color="#1890ff"
+              loading={loading}
+              cssOverride={override}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+            /> :
+            <> 
+              <Sidebar side={sideBar} closeSidebar={closeSidebar} />
+              <AdminNav openSidebar={openSidebar} />
+              <section className="ml-0 sm:ml-64 bg-slate-200 min-h-screen pt-28 px-4">
         <div className="text-justify rounded-md">
           <div className='mb-4'>
                 <h1 className='text-2xl font-medium text-gray-600'>All Leads</h1>
@@ -81,7 +104,9 @@ function ShowLeads() {
               </div>
           }
         </div>
-      </section>
+              </section>
+            </>
+      }
     </>
   )
 }

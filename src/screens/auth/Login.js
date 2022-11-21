@@ -4,6 +4,7 @@ import { useAuthLoginMutation } from '../../store/services/authService';
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setAdminToken } from '../../store/reducers/authReducer';
+import { HashLoader } from "react-spinners";
 
 function AdminLogin() {
   
@@ -41,10 +42,26 @@ function AdminLogin() {
       // redirect to this route
       navigate('/dashboard');
     }
-  }, [response.isSuccess, dispatch, navigate, response?.data?.token])
+  }, [response.isSuccess, dispatch, navigate, response?.data?.token]);
+
+  const override = {
+    display: "block",
+    margin: "0 auto",
+    height: '100vh',
+    width: '100%',
+    size: '100%',
+    transform: 'rotate(0deg)'
+  };
 
   return (
-    <div className="h-screen bg-slate-100 flex justify-center items-center flex-col font-primary">
+    <>
+    {
+      response.isLoading ? <HashLoader
+      color="#1890ff"
+      cssOverride={override}
+      aria-label="Loading Spinner"
+      data-testid="loader"
+    /> : <div className="h-screen bg-slate-100 flex justify-center items-center flex-col font-primary">
       <div className="mb-10">
         <h1 className="text-5xl font-semibold">Sign In</h1>
       </div>
@@ -97,7 +114,9 @@ function AdminLogin() {
           </div>
         </form>
       </div>
-    </div>
+         </div>
+    }
+    </>
   )
 }
 

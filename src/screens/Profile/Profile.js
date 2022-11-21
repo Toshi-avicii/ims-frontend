@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import jwtDecode from 'jwt-decode';
 import { useGetUserProfileQuery } from '../../store/services/profileService'
 import { fetchProfileData } from '../../store/reducers/profileReducer';
+import { HashLoader } from 'react-spinners';
 
 function Profile() {
   const [sideBar, setSidebar] = useState('-left-64');
@@ -15,6 +16,8 @@ function Profile() {
     photo: '',
     role: '',
   });
+
+  const [loading, setLoading] = useState(true);
 
   const openSidebar = () => {
     setSidebar('-left-0');
@@ -37,6 +40,10 @@ function Profile() {
   
   useEffect(() => {
     document.title = 'Profile | Edlyf - Inquiry Management System';
+    if(isFetching) {
+      setLoading(true);
+    }
+
     if(!isFetching) {
       setUserData({
         name: data.data.name,
@@ -58,18 +65,39 @@ function Profile() {
         photo: profilePic,
         role: data.data.role
       }))
+
+      setLoading(false);
     }
   },[data, dispatch, isFetching])
+
+  const override = {
+    display: "block",
+    margin: "0 auto",
+    height: '100vh',
+    width: '100%',
+    size: '100%',
+    transform: 'rotate(0deg)'
+  };
     
   return (
     <>
-      <div className=''>
-      <Sidebar side={sideBar} closeSidebar={closeSidebar} />
-      <AdminNav openSidebar={openSidebar} />
-        <section className='ml-0 sm:ml-64 bg-white min-h-screen pt-24 sm:pt-4 px-4 sm:px-4'>
-        <ProfileHeader userData={userData} />
+    {
+      loading ? <HashLoader
+        color="#1890ff"
+        loading={loading}
+        cssOverride={override}
+        aria-label="Loading Spinner"
+        data-testid="loader"
+      /> : <>
+        <div className=''>
+          <Sidebar side={sideBar} closeSidebar={closeSidebar} />
+          <AdminNav openSidebar={openSidebar} />
+          <section className='ml-0 sm:ml-64 bg-white min-h-screen pt-24 sm:pt-4 px-4 sm:px-4'>
+          <ProfileHeader userData={userData} />
         </section>
-      </div>
+      </div> 
+      </>
+    }
     </>
   )
 }

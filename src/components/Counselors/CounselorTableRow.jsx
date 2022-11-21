@@ -6,7 +6,7 @@ import CounselorsEditModal from "./CounselorsEditModal";
 
 function CounselorTableRow({ item, index }) {
 
-  const  [openEditModal, setOpenEditModal] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
   const [deleteOneCounselor, response] = useSendToTrashMutation();
 
   const deleteHandler = (e) => {
@@ -57,7 +57,7 @@ function CounselorTableRow({ item, index }) {
         {item.photo && (
           <td className="flex justify-center items-center h-full px-5 py-8">
             <img
-              src={`http://localhost:5000/${item.photo}`}
+              src={`https://inquiry-management-system-backend.onrender.com/${item.photo}`}
               alt="user_image"
               width={50}
               height={50}

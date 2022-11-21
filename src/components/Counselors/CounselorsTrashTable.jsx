@@ -3,7 +3,7 @@ import CounselorsTrashRow from "./CounselorsTrashRow";
 function CounselorsTrashTable({ data }) {
   return (
     <>
-      <div className="bg-slate-100 shadow-md rounded-md overflow-x-auto text-center">
+      <div className="bg-slate-100 shadow-md rounded-md overflow-auto text-center">
         <table className="w-full">
           <thead>
             <tr className="border-b border-b-gray-300 bg-white text-center">
