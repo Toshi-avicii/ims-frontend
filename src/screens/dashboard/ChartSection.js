@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 // import LineChart from '../../components/Charts/LineChart';
 import PieChart from '../../components/Charts/PieChart';
 import { useGetCounselorsQuery } from '../../store/services/counselorService';
+import { ScaleLoader } from 'react-spinners';
 
 function ChartSection() {
 
@@ -33,6 +34,8 @@ function ChartSection() {
             }
         ]
     });
+
+    const [loading, setLoading] = useState(true);
 
     const [totalLeadsLength, setTotalLeadsLength] = useState(0);
 
@@ -299,16 +302,38 @@ function ChartSection() {
                 });
                
             })
+
+            setLoading(false);
         }
 
     }, [adminToken, data, isFetching, isSuccess, totalLeadsLength]);
 
+    const override = {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        margin: "0 auto",
+        height: '100%',
+        width: '100%',
+        size: '100%',
+        transform: 'rotate(0deg)'
+    };
+
     return (
-        <div className='grid grid-cols-2 lg:mx-2 gap-4'>
-            <BarChart chartData={chartData} />
-            {/* <LineChart chartData={leadData} /> */}
-            <PieChart chartData={doughnutData} />
-        </div>
+        <>
+            {
+                loading ? <ScaleLoader
+                color="#1890ff"
+                cssOverride={override}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+              /> : <div className='grid grid-cols-2 lg:mx-2 gap-4'>
+                    <BarChart chartData={chartData} />
+                    {/* <LineChart chartData={leadData} /> */}
+                    <PieChart chartData={doughnutData} />
+                   </div>
+            }
+        </>
     )
 }
 

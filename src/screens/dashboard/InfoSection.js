@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import InfoCard from "../../components/InfoCard";
@@ -5,10 +6,12 @@ import { useGetAllLeadsQuery } from '../../store/services/leadService';
 import { fetchLeadsData } from "../../store/reducers/leadReducer"; 
 import { useGetCounselorsQuery } from "../../store/services/counselorService";
 import { fetchCounselorData } from "../../store/reducers/counselorReducer";
+import { ScaleLoader } from 'react-spinners';
 
 const InfoSection = () => {
 
   const { data, isFetching } = useGetAllLeadsQuery();
+  const [loading, setLoading] = useState(true);
   const response = useGetCounselorsQuery();
   const dispatch = useDispatch();
   let leadsThisMonth = useSelector(state => state.leadReducer.leadsThisMonth);
@@ -19,6 +22,7 @@ const InfoSection = () => {
   useEffect(() => {
     if(!response.isFetching) {
       dispatch(fetchCounselorData({counselorCount: response?.data?.counselors.length}));
+      setLoading(false);
     }
     if(!isFetching) {
       let pendingLeadsCount = [];
@@ -55,17 +59,38 @@ const InfoSection = () => {
           newLeads: leadsToday.length
         }));
       }
+      setLoading(false);
     }
 
   }, [dispatch, data, isFetching, response]);
 
+  const override = {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    margin: "0 auto",
+    height: '100%',
+    width: '100%',
+    size: '100%',
+    transform: 'rotate(0deg)'
+  };
+
   return (
-    <div className="lg:flex lg:justify-between">
-        <InfoCard headingText="Leads Generated This Month" stat={leadsThisMonth} iconClass="bi bi-person-lines-fill" />
-        <InfoCard headingText="Pending Leads" stat={pendingLeads} iconClass="bi bi-stopwatch" />
-        <InfoCard headingText="New Leads Added Today" stat={newLeadsToday} iconClass="bi bi-person-plus-fill" />
-        <InfoCard headingText="No. of counselors" stat={counselorCount} iconClass="bi bi-people-fill" />
-    </div>
+    <>
+      {
+        loading ? <ScaleLoader
+          color="#1890ff"
+          cssOverride={override}
+          aria-label="Loading Spinner"
+          data-testid="loader"
+        /> : <div className="lg:flex lg:justify-between">
+          <InfoCard headingText="Leads Generated This Month" stat={leadsThisMonth} iconClass="bi bi-person-lines-fill" />
+          <InfoCard headingText="Pending Leads" stat={pendingLeads} iconClass="bi bi-stopwatch" />
+          <InfoCard headingText="New Leads Added Today" stat={newLeadsToday} iconClass="bi bi-person-plus-fill" />
+          <InfoCard headingText="No. of counselors" stat={counselorCount} iconClass="bi bi-people-fill" />
+        </div>
+      }
+    </>
   )
 }
 
